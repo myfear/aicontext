@@ -19,6 +19,8 @@ import jdk.javadoc.doclet.Taglet;
  * - @aicontext-rule: Coding rules and constraints
  * - @aicontext-decision: Design decisions with rationale
  * - @aicontext-context: Business context and requirements
+ * - @aicontext-graph: Relationship graph (uses, calls, db, events, by, external, config)
+ * - @aicontext-graph-ignore: Intentional omission from graph validation (comma-separated class names)
  */
 public class AIContextTaglet implements Taglet {
 
@@ -28,6 +30,8 @@ public class AIContextTaglet implements Taglet {
         // Class-level tags have higher priority (architectural guidance)
         TAG_PRIORITY.put("aicontext-rule", 100);
         TAG_PRIORITY.put("aicontext-decision", 90);
+        TAG_PRIORITY.put("aicontext-graph", 85);
+        TAG_PRIORITY.put("aicontext-graph-ignore", 82);
         TAG_PRIORITY.put("aicontext-context", 80);
     }
 
@@ -58,10 +62,14 @@ public class AIContextTaglet implements Taglet {
     public static void register(Map<String, Taglet> tagletMap) {
         AIContextTaglet ruleTag = new AIContextTaglet("aicontext-rule");
         AIContextTaglet decisionTag = new AIContextTaglet("aicontext-decision");
+        AIContextTaglet graphTag = new AIContextTaglet("aicontext-graph");
+        AIContextTaglet graphIgnoreTag = new AIContextTaglet("aicontext-graph-ignore");
         AIContextTaglet contextTag = new AIContextTaglet("aicontext-context");
 
         tagletMap.put(ruleTag.getName(), ruleTag);
         tagletMap.put(decisionTag.getName(), decisionTag);
+        tagletMap.put(graphTag.getName(), graphTag);
+        tagletMap.put(graphIgnoreTag.getName(), graphIgnoreTag);
         tagletMap.put(contextTag.getName(), contextTag);
     }
 

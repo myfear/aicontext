@@ -8,6 +8,7 @@ files:
       or:
         - type: rule
         - type: decision
+        - type: graph
     sort:
       field: priority
       order: desc

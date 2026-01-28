@@ -23,3 +23,28 @@ Project-specific instructions for {{projectName}}.
 - **{{location}}**: {{content}}{{#timestamp}} ({{timestamp}}){{/timestamp}}
 {{/decisions}}
 {{/hasDecisions}}
+
+{{#hasGraphEntries}}
+## Relationship Graph
+
+Compact graph notation for services, dependencies, and data flow. Use this to understand who uses whom, what is called, and where data lives.
+
+> **Note**: Generated from `@aicontext-graph` tags. For syntax, see the project README.
+
+{{#graphEntries}}
+{{#hasGraphNodes}}
+### {{location}}
+
+**File**: `{{filePath}}:{{lineNumber}}`
+
+{{#graphNodes}}
+**{{name}}**
+{{#edges}}
+- **[{{relationType}}]** {{#isOutbound}}→{{/isOutbound}}{{#isInbound}}←{{/isInbound}} {{targetsJoined}}
+{{/edges}}
+
+{{/graphNodes}}
+---
+{{/hasGraphNodes}}
+{{/graphEntries}}
+{{/hasGraphEntries}}

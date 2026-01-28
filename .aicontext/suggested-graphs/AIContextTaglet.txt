@@ -1,0 +1,7 @@
+# Suggested @aicontext-graph for this class.
+# Review and copy the block below into class-level Javadoc.
+# Add [calls], [db], [events], [by] as needed.
+
+AIContextTaglet
+  # ├─[uses]→ (none detected)
+  # Add more edges: [calls], [db], [events], [by]←, [external], [config]

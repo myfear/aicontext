@@ -1,0 +1,37 @@
+---
+globs: []
+alwaysApply: false
+applyIntelligently: true
+description: "{{description}}"
+---
+
+# {{title}}
+
+Compact graph notation for services, dependencies, and data flow. Use this to understand who uses whom, what is called, and where data lives.
+
+> **Note**: This document is generated from `@aicontext-graph` tags. For syntax, see the project README.
+
+{{#groupedEntries}}
+## {{package}}
+
+{{#entries}}
+{{#hasGraphNodes}}
+### {{className}}
+
+**File**: `{{filePath}}:{{lineNumber}}`
+
+{{#graphNodes}}
+**{{name}}**
+{{#edges}}
+- **[{{relationType}}]** {{#isOutbound}}→{{/isOutbound}}{{#isInbound}}←{{/isInbound}} {{targetsJoined}}
+{{/edges}}
+
+{{/graphNodes}}
+---
+{{/hasGraphNodes}}
+{{/entries}}
+{{/groupedEntries}}
+
+{{^groupedEntries}}
+{{{emptyMessage}}}
+{{/groupedEntries}}

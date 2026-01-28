@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -190,12 +191,21 @@ class ScaffoldingTest {
         
         mojo.execute();
         
-        Path cursorRules = outputDir.toPath().resolve("cursor/.cursorrules");
-        assertThat(cursorRules).exists();
-        
-        String content = Files.readString(cursorRules);
-        assertThat(content).contains("AI Context Rules for Cursor");
-        assertThat(content).contains("Architectural Constraints");
+        Path cursorRulesDir = outputDir.toPath().resolve("cursor/.cursor/rules");
+        assertThat(cursorRulesDir).exists();
+        assertThat(cursorRulesDir).isDirectory();
+        List<Path> mdFiles = Files.list(cursorRulesDir).filter(p -> p.toString().endsWith(".md")).toList();
+        assertThat(mdFiles).hasSize(5);
+        assertThat(cursorRulesDir.resolve("01-architectural-rules.md")).exists();
+        assertThat(cursorRulesDir.resolve("02-implementation-rules.md")).exists();
+        assertThat(cursorRulesDir.resolve("03-design-decisions.md")).exists();
+        assertThat(cursorRulesDir.resolve("04-context-notes.md")).exists();
+        assertThat(cursorRulesDir.resolve("05-relationship-graph.md")).exists();
+        String content = Files.readString(cursorRulesDir.resolve("01-architectural-rules.md"));
+        assertThat(content).contains("---");
+        assertThat(content).contains("alwaysApply:");
+        assertThat(content).contains("applyIntelligently:");
+        assertThat(content).contains("description:");
     }
 
     @Test
@@ -216,15 +226,12 @@ class ScaffoldingTest {
     void testLimit_AppliedCorrectly() throws Exception {
         createTestSourceFile();
         
-        // Cursor config has limit: 20
         mojo.execute();
         
-        Path cursorRules = outputDir.toPath().resolve("cursor/.cursorrules");
-        String content = Files.readString(cursorRules);
-        
-        // Should not exceed limit (though we only have a few entries in test)
-        long decisionCount = content.split("\\*\\*").length / 2; // Rough count
-        assertThat(decisionCount).isLessThanOrEqualTo(21); // Allow some margin
+        // Cursor generates exactly 5 grouped rule files (rules, decisions, context, graph)
+        Path cursorRulesDir = outputDir.toPath().resolve("cursor/.cursor/rules");
+        long fileCount = Files.list(cursorRulesDir).filter(p -> p.toString().endsWith(".md")).count();
+        assertThat(fileCount).isEqualTo(5);
     }
 
     private void createTestSourceFile() throws IOException {

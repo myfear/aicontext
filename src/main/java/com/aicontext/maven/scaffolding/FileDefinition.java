@@ -14,6 +14,8 @@ public class FileDefinition {
     private SortDefinition sort;
     private String groupBy;
     private Integer limit;
+    private Boolean perEntry;
+    private String entryFilename;
     private Map<String, Object> context;
 
     public FileDefinition() {
@@ -76,6 +78,22 @@ public class FileDefinition {
         this.limit = limit;
     }
 
+    public Boolean getPerEntry() {
+        return perEntry;
+    }
+
+    public void setPerEntry(Boolean perEntry) {
+        this.perEntry = perEntry;
+    }
+
+    public String getEntryFilename() {
+        return entryFilename;
+    }
+
+    public void setEntryFilename(String entryFilename) {
+        this.entryFilename = entryFilename;
+    }
+
     public Map<String, Object> getContext() {
         return context;
     }
@@ -103,6 +121,12 @@ public class FileDefinition {
         if (map.get("sort") instanceof Map) {
             def.setSort(SortDefinition.fromMap((Map<String, Object>) map.get("sort")));
         }
+
+        if (map.get("perEntry") instanceof Boolean) {
+            def.setPerEntry((Boolean) map.get("perEntry"));
+        }
+
+        def.setEntryFilename((String) map.get("entryFilename"));
 
         if (map.get("context") instanceof Map) {
             def.setContext((Map<String, Object>) map.get("context"));

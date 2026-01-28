@@ -59,9 +59,11 @@ class AIContextMojoIntegrationTest {
         assertThat(claudeDir.resolve("RULES.md")).exists();
         assertThat(claudeDir.resolve("TAG_INDEX.md")).exists();
         
-        // Verify Cursor docs
+        // Verify Cursor docs (.cursor/rules/*.md)
         Path cursorDir = outputDir.toPath().resolve("cursor");
-        assertThat(cursorDir.resolve(".cursorrules")).exists();
+        Path cursorRulesDir = cursorDir.resolve(".cursor/rules");
+        assertThat(cursorRulesDir).exists();
+        assertThat(cursorRulesDir).isDirectory();
         
         // Verify Copilot docs
         Path copilotDir = outputDir.toPath().resolve("copilot");

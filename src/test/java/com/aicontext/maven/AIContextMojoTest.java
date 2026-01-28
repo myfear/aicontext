@@ -115,7 +115,10 @@ class AIContextMojoTest {
         
         Path cursorDir = outputDir.toPath().resolve("cursor");
         assertThat(cursorDir).exists();
-        assertThat(cursorDir.resolve(".cursorrules")).exists();
+        Path cursorRulesDir = cursorDir.resolve(".cursor/rules");
+        assertThat(cursorRulesDir).exists();
+        assertThat(cursorRulesDir).isDirectory();
+        assertThat(Files.list(cursorRulesDir).filter(p -> p.toString().endsWith(".md")).count()).isGreaterThan(0);
     }
 
     @Test

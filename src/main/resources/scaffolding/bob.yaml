@@ -46,3 +46,13 @@ files:
     sort:
       field: priority
       order: desc
+
+  - name: .Bob/rules-${project.artifactId}-mode/05-relationship-graph.md
+    template: bob/relationship-graph.md.mustache
+    description: Relationship graph for Bob mode
+    filter:
+      type: graph
+    groupBy: package
+    sort:
+      field: location
+      order: asc

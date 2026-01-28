@@ -39,6 +39,16 @@ files:
       field: priority
       order: desc
   
+  - name: RELATIONSHIPS.md
+    template: claude/relationships.md.mustache
+    description: Relationship graph (uses, calls, db, events, by, external, config)
+    filter:
+      type: graph
+    groupBy: package
+    sort:
+      field: location
+      order: asc
+
   - name: TAG_INDEX.md
     template: claude/tag-index.md.mustache
     description: Searchable index of all tags

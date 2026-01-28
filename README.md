@@ -2,6 +2,28 @@
 
 > Embed AI coding assistant context directly in your Java code using enhanced Javadoc tags
 
+---
+
+## Warning
+
+**This plugin is not yet available on Maven Central.** You must build it from source and install it into your local Maven repository before you can use it in other projects.
+
+---
+
+## How to build
+
+Build and install the plugin into your local Maven repository:
+
+```bash
+git clone https://github.com/myfear/aicontext.git
+cd aicontext
+mvn clean install
+```
+
+After a successful build, the plugin is available in your local repo and you can add it to any project's `pom.xml` as shown in Quick Start below.
+
+---
+
 ## Quick Start
 
 **1. Add the plugin to your `pom.xml`:**
@@ -51,7 +73,7 @@ mvn compile
 | Assistant | Reads From |
 |-----------|-----------|
 | Claude Code | `CLAUDE.md` (project root) |
-| Cursor | `.cursorrules` (project root) |
+| Cursor | `.cursor/rules/` (markdown files with frontmatter) |
 | GitHub Copilot | `.github/copilot-instructions.md` |
 | IBM Bob | `.Bobmodes` + `.Bob/rules-{artifactId}-mode/` |
 
@@ -66,7 +88,7 @@ AIContext extends Javadoc with custom tags to capture architectural decisions, c
 | Assistant | Output Location | Format |
 |-----------|----------------|--------|
 | **Claude Code** | `CLAUDE.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `RULES.md`, `TAG_INDEX.md` | Multi-file Markdown |
-| **Cursor** | `.cursorrules` | Flat rules format |
+| **Cursor** | `.cursor/rules/` | Five grouped files (01–05) with frontmatter (`alwaysApply`, `applyIntelligently`, `description`) |
 | **GitHub Copilot** | `.github/copilot-instructions.md` | Markdown instructions |
 | **IBM Bob** | `.Bobmodes` + `.Bob/rules-{artifactId}-mode/` | Custom mode with instruction files |
 
@@ -105,7 +127,78 @@ public class PaymentService {
 |-----|---------|---------|
 | `@aicontext-rule` | Coding rules, constraints, must-follow patterns | `@aicontext-rule Never retry 4xx errors, only 5xx` |
 | `@aicontext-decision` | Design decisions with date and rationale | `@aicontext-decision [2024-01-15] Using PostgreSQL for ACID compliance` |
+| `@aicontext-graph` | Relationship graph (compact notation) | See [Compact Graph Notation](#compact-graph-notation) below |
+| `@aicontext-graph-ignore` | Intentional omission from graph validation | `@aicontext-graph-ignore StringUtils, LoggingHelper` |
 | `@aicontext-context` | Business context, regulatory requirements | `@aicontext-context GDPR: 7-year data retention` |
+
+### 4. **Compact Graph Notation** (`@aicontext-graph`)
+
+Use `@aicontext-graph` on a class to document relationships in a compact, tree-style notation. This generates **RELATIONSHIPS.md** (Claude) and gives AI assistants a clear view of who uses whom, what is called, and where data lives.
+
+**Syntax:** First line = node name. Following lines = edges: `├─[relation]→ targets` or `└─[by]← callers`.
+
+| Relation | Meaning | Direction |
+|----------|---------|-----------|
+| `[uses]` | Dependencies (types used) | → |
+| `[calls]` | Method calls | → |
+| `[db]` | Database tables (e.g. `W:table(columns)`) | → |
+| `[events]` | Events published | → |
+| `[external]` | External APIs / URLs | → |
+| `[config]` | Config keys / env vars | → |
+| `[by]` | Callers (who calls this) | ← |
+
+**Example in Javadoc:**
+
+```java
+/**
+ * Payment processing service.
+ *
+ * @aicontext-graph
+ * PaymentService
+ *   ├─[uses]→ StripeClient, PaymentRepository, EventPublisher
+ *   ├─[calls]→ StripeClient.charge(), PaymentRepository.save()
+ *   ├─[db]→ W:payment_transactions(id,user_id,amount,currency,status)
+ *   ├─[events]→ PaymentProcessedEvent
+ *   └─[by]← OrderService.checkout(), SubscriptionService.charge()
+ */
+public class PaymentService { }
+```
+
+Multiple nodes (e.g. a related client) can be defined in one tag by separating blocks with a blank line:
+
+```java
+/**
+ * @aicontext-graph
+ * StripeClient
+ *   ├─[external]→ https://api.stripe.com/v1
+ *   ├─[config]→ STRIPE_API_KEY
+ *   └─[by]← PaymentService, RefundService, WebhookController
+ */
+public class StripeClient { }
+```
+
+Relation types are extensible: any `[label]` is accepted. Use `→` for outbound edges (this → others) and `←` for inbound (others → this, e.g. callers).
+
+#### Suggested graphs and validation
+
+- **Generate suggested graphs (manual):** Run `mvn aicontext:generate-graphs` to write `target/suggested-graphs/<ClassName>.txt` per class. Review and copy the suggested `[uses]` block into class Javadoc.
+- **During normal compile** (when `generate-docs` runs):
+  - **Lenient:** The plugin **warns** if the graph documents a type the code does not use.
+  - **Strict:** If the code uses a project class that is **not** in the graph and **not** listed in `@aicontext-graph-ignore`, the build **errors** with: `Class dependency 'X' found but not in graph. Add to @aicontext-graph or @aicontext-graph-ignore.`
+- **@aicontext-graph-ignore:** Comma-separated class names to intentionally omit from graph validation (e.g. utilities you don’t want to document in the graph).
+
+```java
+/**
+ * @aicontext-graph
+ * PaymentService
+ *   ├─[uses]→ StripeClient, PaymentRepository
+ *   └─[by]← OrderService
+ * @aicontext-graph-ignore StringUtils, LoggingHelper
+ */
+public class PaymentService { }
+```
+
+Disable validation: `<validateGraph>false</validateGraph>` in the plugin configuration.
 
 ## Installation
 
@@ -128,6 +221,8 @@ public class PaymentService {
                         <!-- Required: specify which assistant(s) to generate for -->
                         <!-- Options: claude, cursor, copilot, bob (comma-separated) -->
                         <assistants>cursor</assistants>
+                        <!-- Optional: validate @aicontext-graph vs code (default true) -->
+                        <!-- <validateGraph>false</validateGraph> -->
                     </configuration>
                 </execution>
             </executions>
@@ -201,7 +296,13 @@ your-project/
 ├── DECISIONS.md                 # Decision log
 ├── RULES.md                     # Coding rules
 ├── TAG_INDEX.md                 # Searchable index
-├── .cursorrules                 # Cursor rules
+├── .cursor/
+│   └── rules/                   # Cursor rules (grouped .md files with frontmatter)
+│       ├── 01-architectural-rules.md
+│       ├── 02-implementation-rules.md
+│       ├── 03-design-decisions.md
+│       ├── 04-context-notes.md
+│       └── 05-relationship-graph.md
 ├── .github/
 │   └── copilot-instructions.md  # GitHub Copilot instructions
 ├── .Bobmodes                    # IBM Bob mode configuration
@@ -210,7 +311,8 @@ your-project/
         ├── 01-architectural-rules.md
         ├── 02-implementation-rules.md
         ├── 03-design-decisions.md
-        └── 04-context-notes.md
+        ├── 04-context-notes.md
+        └── 05-relationship-graph.md
 ```
 
 ### Step 3: Use with AI Assistants
@@ -219,7 +321,7 @@ your-project/
 Claude automatically reads `CLAUDE.md` when you open the project.
 
 #### Cursor
-Cursor automatically reads `.cursorrules` from the project root.
+Cursor reads rule files from `.cursor/rules/`. The plugin generates five grouped files with YAML frontmatter: `01-architectural-rules.md` and `02-implementation-rules.md` use `alwaysApply: true`; `03-design-decisions.md`, `04-context-notes.md`, and `05-relationship-graph.md` use `applyIntelligently: true`. Use the type dropdown in Cursor to control how rules are applied.
 
 #### GitHub Copilot
 Copilot reads `.github/copilot-instructions.md` automatically.
@@ -305,7 +407,7 @@ If you have manually-created instruction files, you'll see:
 ```
 ERROR: Found existing instruction file(s):
   - /path/to/project/CLAUDE.md
-  - /path/to/project/.cursorrules
+  - /path/to/project/.cursor/rules
 
 The AIContext plugin cannot overwrite existing instruction files.
 Please migrate the content to @aicontext-* Javadoc annotations in your code,
@@ -432,24 +534,57 @@ Using Stripe as primary payment gateway for international support.
 ---
 ```
 
-### Cursor (.cursorrules)
+### Cursor (`.cursor/rules/*.md`)
+
+Rules are grouped into four files (like IBM Bob). Architectural and implementation rules use `alwaysApply: true`; design decisions and context notes use `applyIntelligently: true`.
+
+**01-architectural-rules.md** (always applied):
 
 ```markdown
-# AI Context Rules for Cursor
+---
+globs: []
+alwaysApply: true
+applyIntelligently: false
+description: "Class-level rules that affect overall design and structure."
+---
 
-Project: My Java Project
+# Architectural Rules
 
-## Architectural Constraints
+## com.example.PaymentService
 
-- **com.example.payment.PaymentService**: Never log credit card details, use tokens only
-- **com.example.payment.PaymentService**: All payment operations must complete within 30 seconds
+Never log credit card details, use tokens only.
 
-## Design Decisions
+*Source: `src/main/java/.../PaymentService.java:42`*
 
-- **com.example.payment.PaymentService**: Using Stripe for international support [2024-01-15]
+---
+```
+
+**03-design-decisions.md** (applied intelligently):
+
+```markdown
+---
+globs: []
+alwaysApply: false
+applyIntelligently: true
+description: "Key architectural and implementation decisions (newest first)."
+---
+
+# Design Decisions
+
+## com.example.PaymentService
+
+*Date: 2024-01-15*
+
+Using Stripe as primary payment gateway for international support.
+
+*Source: `src/main/java/.../PaymentService.java:45`*
+
+---
 ```
 
 ### GitHub Copilot (copilot-instructions.md)
+
+The plugin generates a single instructions file that includes project-specific rules, key design decisions, and (when present) a **Relationship Graph** section from `@aicontext-graph` tags.
 
 ```markdown
 # GitHub Copilot Instructions

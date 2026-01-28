@@ -1,18 +1,92 @@
 assistant: cursor
 outputDir: .
 files:
-  - name: .cursorrules
-    template: cursor/cursorrules.mustache
-    description: Cursor-specific rules format (flat, concise)
+  - name: .cursor/rules/01-architectural-rules.md
+    template: cursor/grouped-rules.mustache
+    description: Architectural rules for Cursor (always applied)
     filter:
-      or:
-        - type: rule
-          level: ARCHITECTURAL
-        - type: decision
+      type: rule
+      level: ARCHITECTURAL
     sort:
       field: priority
       order: desc
     context:
-      ruleLimit: 20
-      decisionLimit: 15
-      flatFormat: true
+      title: Architectural Rules
+      description: Class-level rules that affect overall design and structure.
+      alwaysApply: true
+      applyIntelligently: false
+      emptyMessage: |
+        *No architectural rules documented yet.*
+        To add architectural rules, use `@aicontext-rule` in class-level Javadoc.
+
+  - name: .cursor/rules/02-implementation-rules.md
+    template: cursor/grouped-rules.mustache
+    description: Implementation rules for Cursor (always applied)
+    filter:
+      type: rule
+      level: IMPLEMENTATION
+    sort:
+      field: priority
+      order: desc
+    context:
+      title: Implementation Rules
+      description: Method-level rules for specific implementation details.
+      alwaysApply: true
+      applyIntelligently: false
+      emptyMessage: |
+        *No implementation rules documented yet.*
+        To add implementation rules, use `@aicontext-rule` in method-level Javadoc.
+
+  - name: .cursor/rules/03-design-decisions.md
+    template: cursor/grouped-rules.mustache
+    description: Design decisions for Cursor (applied intelligently)
+    filter:
+      type: decision
+    sort:
+      field: timestamp
+      order: desc
+    context:
+      title: Design Decisions
+      description: Key architectural and implementation decisions (newest first).
+      alwaysApply: false
+      applyIntelligently: true
+      emptyMessage: |
+        *No design decisions documented yet.*
+        To document design decisions, use `@aicontext-decision` in Javadoc.
+
+  - name: .cursor/rules/04-context-notes.md
+    template: cursor/grouped-rules.mustache
+    description: Context notes for Cursor (applied intelligently)
+    filter:
+      or:
+        - type: context
+        - type: inference
+    sort:
+      field: priority
+      order: desc
+    context:
+      title: Context and Additional Notes
+      description: Additional context, business requirements, and inferred patterns.
+      alwaysApply: false
+      applyIntelligently: true
+      emptyMessage: |
+        *No context notes documented yet.*
+        To add context, use `@aicontext-context` in Javadoc.
+
+  - name: .cursor/rules/05-relationship-graph.md
+    template: cursor/relationship-graph.mustache
+    description: Relationship graph for Cursor (applied intelligently)
+    filter:
+      type: graph
+    groupBy: package
+    sort:
+      field: location
+      order: asc
+    context:
+      title: Relationship Graph
+      description: Compact graph notation for services, dependencies, and data flow.
+      alwaysApply: false
+      applyIntelligently: true
+      emptyMessage: |
+        *No relationship graphs found.*
+        Add `@aicontext-graph` to class-level Javadoc with compact graph notation to populate this document.

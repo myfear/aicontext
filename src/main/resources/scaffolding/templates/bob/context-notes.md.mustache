@@ -4,20 +4,18 @@ Additional context, business requirements, and inferred patterns.
 
 > This document contains supplementary information that helps understand the codebase better.
 
-{{#contextEntries}}
+{{#groupedContextEntries}}
 ## {{location}}
 
-**Type**: {{typeLabel}}
-
-{{content}}
+{{#items}}
+- {{content}}
+{{/items}}
 
 *Source: `{{filePath}}:{{lineNumber}}`*
 
----
+{{/groupedContextEntries}}
 
-{{/contextEntries}}
-
-{{^contextEntries}}
+{{^groupedContextEntries}}
 *No context notes documented yet.*
 
 To add context, use `@aicontext-context` in Javadoc:
@@ -35,4 +33,4 @@ public class PaymentService { ... }
  */
 public class ApplicationConfig { ... }
 ```
-{{/contextEntries}}
+{{/groupedContextEntries}}

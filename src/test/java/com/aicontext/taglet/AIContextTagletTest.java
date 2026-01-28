@@ -78,10 +78,12 @@ class AIContextTagletTest {
         
         AIContextTaglet.register(tagletMap);
         
-        assertThat(tagletMap).hasSize(3);
+        assertThat(tagletMap).hasSize(5);
         assertThat(tagletMap).containsKeys(
             "aicontext-rule",
             "aicontext-decision",
+            "aicontext-graph",
+            "aicontext-graph-ignore",
             "aicontext-context"
         );
         

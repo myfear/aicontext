@@ -1,0 +1,25 @@
+---
+globs: []
+alwaysApply: {{alwaysApply}}
+applyIntelligently: {{applyIntelligently}}
+description: "{{description}}"
+---
+
+# {{title}}
+
+{{#entries}}
+## {{location}}
+{{#timestamp}}
+*Date: {{timestamp}}*
+{{/timestamp}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+---
+{{/entries}}
+
+{{^entries}}
+{{{emptyMessage}}}
+{{/entries}}
