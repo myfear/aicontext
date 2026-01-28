@@ -1,0 +1,38 @@
+# Context and Additional Notes
+
+Additional context, business requirements, and inferred patterns.
+
+> This document contains supplementary information that helps understand the codebase better.
+
+{{#contextEntries}}
+## {{location}}
+
+**Type**: {{typeLabel}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+---
+
+{{/contextEntries}}
+
+{{^contextEntries}}
+*No context notes documented yet.*
+
+To add context, use `@aicontext-context` in Javadoc:
+
+```java
+/**
+ * @aicontext-context This service handles PCI-DSS compliant payment processing.
+ * All card data must be tokenized before storage.
+ */
+public class PaymentService { ... }
+
+/**
+ * @aicontext-context Based on the codebase analysis, this project follows
+ * a hexagonal architecture pattern with clear port/adapter separation.
+ */
+public class ApplicationConfig { ... }
+```
+{{/contextEntries}}

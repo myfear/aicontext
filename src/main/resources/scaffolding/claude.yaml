@@ -1,0 +1,47 @@
+assistant: claude
+outputDir: .
+files:
+  - name: CLAUDE.md
+    template: claude/main.md.mustache
+    description: Main entry point for Claude
+    context:
+      includeStatistics: true
+      includeFileLinks: true
+      includeTagTypes: true
+      includeQuickStart: true
+  
+  - name: ARCHITECTURE.md
+    template: claude/architecture.md.mustache
+    description: Class-level architectural guidance
+    filter:
+      level: ARCHITECTURAL
+    groupBy: package
+    sort:
+      field: location
+      order: asc
+  
+  - name: DECISIONS.md
+    template: claude/decisions.md.mustache
+    description: Design decisions log
+    filter:
+      type: decision
+    sort:
+      field: timestamp
+      order: desc
+  
+  - name: RULES.md
+    template: claude/rules.md.mustache
+    description: Coding rules and constraints
+    filter:
+      type: rule
+    groupBy: level
+    sort:
+      field: priority
+      order: desc
+  
+  - name: TAG_INDEX.md
+    template: claude/tag-index.md.mustache
+    description: Searchable index of all tags
+    groupBy: type
+    context:
+      previewLength: 100

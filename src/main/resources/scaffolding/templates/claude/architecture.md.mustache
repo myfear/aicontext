@@ -1,0 +1,29 @@
+# Architectural Guidance
+
+Class-level design patterns, architectural decisions, and high-priority constraints.
+
+> **Note**: This document contains only ARCHITECTURAL-level (class-level) entries. For method-level implementation details, see [RULES.md](./RULES.md) and [TAG_INDEX.md](./TAG_INDEX.md).
+
+{{#groupedEntries}}
+## {{package}}
+
+{{#entries}}
+### {{className}}
+
+**File**: `{{filePath}}:{{lineNumber}}`
+
+{{#timestamp}}
+**Date**: {{timestamp}}
+{{/timestamp}}
+
+**{{typeUpperCase}}** ({{level}}):
+{{content}}
+
+---
+
+{{/entries}}
+{{/groupedEntries}}
+
+{{^groupedEntries}}
+*No architectural-level entries found. Add `@aicontext-*` tags to class-level Javadoc comments to populate this document.*
+{{/groupedEntries}}

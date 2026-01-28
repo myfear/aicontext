@@ -1,0 +1,48 @@
+assistant: bob
+outputDir: .
+files:
+  - name: .Bobmodes
+    template: bob/bobmodes.mustache
+    description: Bob project-specific mode configuration
+    context:
+      includeAllGroups: true
+  
+  - name: .Bob/rules-${project.artifactId}-mode/01-architectural-rules.md
+    template: bob/architectural-rules.md.mustache
+    description: Architectural rules for Bob mode
+    filter:
+      type: rule
+      level: ARCHITECTURAL
+    sort:
+      field: priority
+      order: desc
+  
+  - name: .Bob/rules-${project.artifactId}-mode/02-implementation-rules.md
+    template: bob/implementation-rules.md.mustache
+    description: Implementation rules for Bob mode
+    filter:
+      type: rule
+      level: IMPLEMENTATION
+    sort:
+      field: priority
+      order: desc
+  
+  - name: .Bob/rules-${project.artifactId}-mode/03-design-decisions.md
+    template: bob/design-decisions.md.mustache
+    description: Design decisions for Bob mode
+    filter:
+      type: decision
+    sort:
+      field: timestamp
+      order: desc
+  
+  - name: .Bob/rules-${project.artifactId}-mode/04-context-notes.md
+    template: bob/context-notes.md.mustache
+    description: Context notes for Bob mode
+    filter:
+      or:
+        - type: context
+        - type: inference
+    sort:
+      field: priority
+      order: desc

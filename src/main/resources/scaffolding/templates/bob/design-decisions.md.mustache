@@ -1,0 +1,35 @@
+# Design Decisions
+
+Key architectural and implementation decisions (newest first).
+
+> This document tracks the "why" behind design choices. Refer to these when making changes that might affect existing decisions.
+
+{{#decisions}}
+## {{location}} [{{level}}]
+
+{{#timestamp}}
+*Date: {{timestamp}}*
+{{/timestamp}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+---
+
+{{/decisions}}
+
+{{^decisions}}
+*No design decisions documented yet.*
+
+To document design decisions, use `@aicontext-decision` in Javadoc:
+
+```java
+/**
+ * @aicontext-decision [2024-01-15] Using Strategy pattern for payment processing
+ * to allow easy addition of new payment gateways without modifying existing code.
+ * This decision was made to support the upcoming international expansion.
+ */
+public class PaymentService { ... }
+```
+{{/decisions}}

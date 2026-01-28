@@ -1,0 +1,26 @@
+# Tag Index
+
+Searchable index of all `@aicontext-*` tags organized by type.
+
+> **Tip**: Use this document to find specific types of information quickly. Each entry includes a preview and file location for easy navigation.
+
+{{#groupedEntries}}
+## @aicontext-{{type}}
+
+{{#entries}}
+**{{location}}** [{{level}}]  
+`{{filePath}}:{{lineNumber}}`  
+{{preview}}
+
+{{/entries}}
+
+{{/groupedEntries}}
+
+{{^groupedEntries}}
+*No tags found. Add `@aicontext-*` tags to Javadoc comments to populate this index.*
+
+**Supported Tags:**
+- `@aicontext-rule` - Coding rules and constraints
+- `@aicontext-decision` - Design decisions with rationale
+- `@aicontext-context` - Business context and requirements
+{{/groupedEntries}}

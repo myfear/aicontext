@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.aicontext</groupId>
+  <artifactId>aicontext-maven-plugin</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+
+  <name>aicontext-maven-plugin</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.11.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- Maven Plugin API -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>3.9.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.9.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>2.2.1</version>
+    </dependency>
+
+    <!-- JavaParser for parsing Java source files -->
+    <dependency>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-core</artifactId>
+      <version>3.25.7</version>
+    </dependency>
+
+    <!-- YAML Parser for scaffolding configuration -->
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>2.2</version>
+    </dependency>
+
+    <!-- Mustache Template Engine -->
+    <dependency>
+      <groupId>com.github.spullara.mustache.java</groupId>
+      <artifactId>compiler</artifactId>
+      <version>0.9.10</version>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Optionally: parameterized tests support -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- Mocking framework -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.11.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>5.11.0</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- Fluent assertions -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.24.2</version>
+      <scope>test</scope>
+    </dependency>
+    
+    
+    <!-- HTML Parsing for taglet integration tests -->
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.17.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to
+      parent pom) -->
+      <plugins>
+        <!-- clean lifecycle, see
+        https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
+        <!-- default lifecycle, jar packaging: see
+        https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.3.0</version>
+          <configuration>
+            <useSystemClassLoader>false</useSystemClassLoader>
+            <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.4.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+        <!-- site lifecycle, see
+        https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.12.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.6.1</version>
+        </plugin>
+        <!-- AIContext Maven Plugin -->
+        <plugin>
+          <groupId>com.aicontext</groupId>
+          <artifactId>aicontext-maven-plugin</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <executions>
+            <execution>
+              <id>generate-ai-docs</id>
+              <phase>compile</phase>
+              <goals>
+                <goal>generate-docs</goal>
+              </goals>
+              <configuration>
+                <!-- Source directory to scan -->
+                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+
+                <!-- Output directory for generated docs -->
+                <outputDir>${project.basedir}/.aicontext</outputDir>
+
+                <!-- AI assistants to generate docs for -->
+                <!-- Comma-separated: claude, cursor, copilot -->
+                <assistants>claude,cursor,copilot</assistants>
+
+                <!-- Project name (optional, defaults to artifactId) -->
+                <projectName>My Java Project</projectName>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Javadoc Plugin with AIContext Taglet -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.6.0</version>
+          <configuration>
+            <tagletArtifact>
+              <groupId>com.aicontext</groupId>
+              <artifactId>aicontext-taglet</artifactId>
+              <version>1.0.0</version>
+            </tagletArtifact>
+            <taglets>
+              <taglet>
+                <tagletClass>com.aicontext.taglet.AIContextTaglet</tagletClass>
+              </taglet>
+            </taglets>
+            <tags>
+              <tag>
+                <name>aicontext-rule</name>
+                <placement>a</placement>
+                <head>AI Context Rule:</head>
+              </tag>
+              <tag>
+                <name>aicontext-decision</name>
+                <placement>a</placement>
+                <head>Design Decision:</head>
+              </tag>
+              <tag>
+                <name>aicontext-context</name>
+                <placement>a</placement>
+                <head>Business Context:</head>
+              </tag>
+            </tags>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <!-- Maven Plugin Plugin - required to generate plugin descriptor -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <goalPrefix>aicontext</goalPrefix>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-descriptor</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

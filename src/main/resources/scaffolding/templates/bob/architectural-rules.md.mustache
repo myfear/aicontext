@@ -1,0 +1,30 @@
+# Architectural Rules
+
+Class-level rules that affect overall design and structure.
+
+> These are high-priority constraints that must be followed when making architectural decisions or modifying class-level code.
+
+{{#architecturalRules}}
+## {{location}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+---
+
+{{/architecturalRules}}
+
+{{^architecturalRules}}
+*No architectural rules documented yet.*
+
+To add architectural rules, use `@aicontext-rule` in class-level Javadoc:
+
+```java
+/**
+ * @aicontext-rule All services must implement the ServiceBase interface
+ * for consistent error handling and logging.
+ */
+public class MyService extends ServiceBase { ... }
+```
+{{/architecturalRules}}

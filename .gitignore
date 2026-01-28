@@ -1,6 +1,13 @@
 # Compiled class file
 *.class
 
+# brainstorming
+concepts/
+
+target/
+
+.vscode/
+
 # Log file
 *.log
 

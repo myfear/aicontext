@@ -1,0 +1,25 @@
+# GitHub Copilot Instructions
+
+Project-specific instructions for {{projectName}}.
+
+## Project-Specific Rules
+
+{{#rules}}
+### {{location}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+{{/rules}}
+{{^rules}}
+*No rules defined.*
+{{/rules}}
+
+{{#hasDecisions}}
+## Key Design Decisions
+
+{{#decisions}}
+- **{{location}}**: {{content}}{{#timestamp}} ({{timestamp}}){{/timestamp}}
+{{/decisions}}
+{{/hasDecisions}}

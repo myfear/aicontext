@@ -1,0 +1,58 @@
+# {{projectName}} - AI Context Guide
+
+**Project**: {{projectName}}  
+**Type**: {{projectType}}  
+**Last Updated**: {{lastUpdated}}
+
+## Quick Start for AI Assistants
+
+This project uses `@aicontext-*` Javadoc tags to provide context for AI assistants. These tags are embedded in the source code and extracted to generate this documentation.
+
+### Tag Types
+
+{{#tagTypes}}
+- `@aicontext-{{name}}`: {{description}}
+{{/tagTypes}}
+
+### Priority Levels
+
+| Level | Scope | Description |
+|-------|-------|-------------|
+| **ARCHITECTURAL** | Class-level | Affects overall design, patterns, and system structure |
+| **IMPLEMENTATION** | Method-level | Specific implementation details and local constraints |
+
+{{#includeFileLinks}}
+## Key Documentation Files
+
+| File | Description |
+|------|-------------|
+{{#files}}
+| [{{name}}](./{{name}}) | {{description}} |
+{{/files}}
+{{/includeFileLinks}}
+
+{{#includeStatistics}}
+## Statistics
+
+- Total Entries: {{statistics.total}}
+- Rules: {{statistics.rules}}
+- Decisions: {{statistics.decisions}}
+- Context Notes: {{statistics.context}}
+- Architectural: {{statistics.architectural}}
+- Implementation: {{statistics.implementation}}
+{{/includeStatistics}}
+
+## How to Use This Documentation
+
+1. **Start here** (CLAUDE.md) for an overview of the project's AI context system
+2. **ARCHITECTURE.md** for class-level design patterns and architectural guidance
+3. **DECISIONS.md** for understanding why certain design choices were made
+4. **RULES.md** for coding constraints and must-follow patterns
+5. **TAG_INDEX.md** for searching specific tags by type
+
+## Navigation Tips
+
+- All entries include file paths with line numbers for easy navigation to source
+- Entries are organized hierarchically by package and class
+- Timestamps indicate when decisions were documented
+- Priority levels help distinguish high-impact architectural items from implementation details

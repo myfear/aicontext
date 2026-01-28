@@ -1,0 +1,37 @@
+# Design Decisions Log
+
+Chronological record of all design decisions (newest first).
+
+> **Purpose**: This document helps understand the "why" behind design choices. Use this for onboarding, code reviews, and understanding historical context.
+
+{{#entries}}
+## {{location}}
+
+| Property | Value |
+|----------|-------|
+| **Level** | {{level}} |
+| **File** | `{{filePath}}:{{lineNumber}}` |
+{{#timestamp}}
+| **Date** | {{timestamp}} |
+{{/timestamp}}
+
+### Decision
+
+{{content}}
+
+---
+
+{{/entries}}
+
+{{^entries}}
+*No design decisions documented yet. Add `@aicontext-decision` tags to Javadoc comments to track design decisions.*
+
+**Example:**
+```java
+/**
+ * @aicontext-decision [2024-01-15] Using Strategy pattern for payment processing
+ * to support multiple payment gateways without modifying existing code.
+ */
+public class PaymentService { ... }
+```
+{{/entries}}

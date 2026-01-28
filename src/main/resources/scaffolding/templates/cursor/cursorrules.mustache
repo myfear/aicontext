@@ -1,0 +1,20 @@
+# AI Context Rules for Cursor
+
+Project: {{projectName}}
+
+## Architectural Constraints
+
+{{#architecturalRules}}
+- **{{location}}**: {{content}}
+{{/architecturalRules}}
+{{^architecturalRules}}
+*No architectural rules defined.*
+{{/architecturalRules}}
+
+{{#hasDecisions}}
+## Design Decisions
+
+{{#decisions}}
+- **{{location}}**: {{content}}{{#timestamp}} [{{timestamp}}]{{/timestamp}}
+{{/decisions}}
+{{/hasDecisions}}

@@ -1,0 +1,19 @@
+assistant: copilot
+outputDir: .github
+files:
+  - name: copilot-instructions.md
+    template: copilot/instructions.md.mustache
+    description: GitHub Copilot instructions
+    filter:
+      or:
+        - type: rule
+        - type: decision
+    sort:
+      field: priority
+      order: desc
+    context:
+      ruleLimit: 30
+      decisionLimit: 15
+      includeTechStack: false
+      includeIntegrationPoints: false
+      includeDates: true

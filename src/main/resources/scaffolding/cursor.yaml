@@ -1,0 +1,18 @@
+assistant: cursor
+outputDir: .
+files:
+  - name: .cursorrules
+    template: cursor/cursorrules.mustache
+    description: Cursor-specific rules format (flat, concise)
+    filter:
+      or:
+        - type: rule
+          level: ARCHITECTURAL
+        - type: decision
+    sort:
+      field: priority
+      order: desc
+    context:
+      ruleLimit: 20
+      decisionLimit: 15
+      flatFormat: true

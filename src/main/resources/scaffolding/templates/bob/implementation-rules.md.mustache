@@ -1,0 +1,30 @@
+# Implementation Rules
+
+Method-level rules for specific implementation details.
+
+> These rules apply to specific methods and implementation patterns.
+
+{{#implementationRules}}
+## {{location}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+---
+
+{{/implementationRules}}
+
+{{^implementationRules}}
+*No implementation rules documented yet.*
+
+To add implementation rules, use `@aicontext-rule` in method-level Javadoc:
+
+```java
+/**
+ * @aicontext-rule Always validate input parameters before processing.
+ * Throw IllegalArgumentException for null or invalid values.
+ */
+public void processData(String input) { ... }
+```
+{{/implementationRules}}

@@ -1,0 +1,54 @@
+# Coding Rules and Constraints
+
+> **Purpose**: This document lists all coding rules that must be followed. Architectural rules have higher priority and affect overall design. Implementation rules are method-level constraints.
+
+{{#groupedEntries}}
+## {{groupName}}
+
+{{#entries}}
+### {{location}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+{{/entries}}
+
+{{/groupedEntries}}
+
+{{^groupedEntries}}
+## Architectural Rules (Class-level)
+
+*High-priority class-level rules that affect overall design.*
+
+{{#architecturalRules}}
+### {{location}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+{{/architecturalRules}}
+
+{{^architecturalRules}}
+*No architectural rules documented yet.*
+{{/architecturalRules}}
+
+## Implementation Rules (Method-level)
+
+*Method-level rules for specific implementation details.*
+
+{{#implementationRules}}
+### {{location}}
+
+{{content}}
+
+*Source: `{{filePath}}:{{lineNumber}}`*
+
+{{/implementationRules}}
+
+{{^implementationRules}}
+*No implementation rules documented yet.*
+{{/implementationRules}}
+
+{{/groupedEntries}}

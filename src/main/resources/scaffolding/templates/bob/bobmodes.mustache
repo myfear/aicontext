@@ -1,0 +1,29 @@
+customModes:
+  - slug: {{projectArtifactId}}-mode
+    name: {{projectName}} Mode
+    roleDefinition: >-
+      You are a software engineer working on {{projectName}}.
+      This is a {{projectType}} project. Your role is to understand
+      and follow the project's architectural decisions, coding rules,
+      and design patterns as documented in the codebase.
+      The project has {{statistics.total}} documented context entries:
+      {{statistics.rules}} rules, {{statistics.decisions}} decisions,
+      and {{statistics.context}} context notes.
+    whenToUse: >-
+      Use this mode when working on {{projectName}} to ensure
+      adherence to project-specific rules and architectural decisions.
+    customInstructions: |-
+      This mode is configured with project-specific instructions
+      extracted from @aicontext-* Javadoc tags in the codebase.
+      Refer to the instruction files in .Bob/rules-{{projectArtifactId}}-mode/
+      for detailed guidelines.
+      
+      Key statistics:
+      - Total entries: {{statistics.total}}
+      - Architectural: {{statistics.architectural}}
+      - Implementation: {{statistics.implementation}}
+    groups:
+      - read
+      - edit
+      - browser
+      - command
